@@ -1,0 +1,3 @@
+/Users/gomadoufu/Documents/PiPico/Try-Kernel/build/pioasm/CMakeFiles/pioasm.dir
+/Users/gomadoufu/Documents/PiPico/Try-Kernel/build/pioasm/CMakeFiles/edit_cache.dir
+/Users/gomadoufu/Documents/PiPico/Try-Kernel/build/pioasm/CMakeFiles/rebuild_cache.dir
