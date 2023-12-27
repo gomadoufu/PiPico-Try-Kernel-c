@@ -1,26 +1,29 @@
 cmake_minimum_required(VERSION 3.13)
 
-# initialize the SDK based on PICO_SDK_PATH
-# note: this must happen before project()
 include(pico_sdk_import.cmake)
 
-set(MAIN_FILE_NAME hello_world)
-set(CMAKE_C_STANDARD 11)
+set(MAIN_FILE_NAME pico_tryknl)
+file(GLOB BOOT "boot/*c")
 
-project(my_project)
+message(STATUS "MAIN_FILE_NAME: ${MAIN_FILE_NAME}")
+message(STATUS "CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
+message(STATUS "BOOT: ${BOOT}")
 
-# initialize the Raspberry Pi Pico SDK
+project(try_kernel C CXX ASM)
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 17)
+
 pico_sdk_init()
 
 add_executable(${MAIN_FILE_NAME}
-        ${MAIN_FILE_NAME}.c
+        ${BOOT} ${CMAKE_SOURCE_DIR}/application/main.c
 )
 
-# Add pico_stdlib library which aggregates commonly used features
 target_link_libraries(${MAIN_FILE_NAME} pico_stdlib)
 
-# create map/bin/hex/uf2 file in addition to ELF.
-pico_add_extra_outputs(${MAIN_FILE_NAME})
+target_link_options(${MAIN_FILE_NAME}
+            PUBLIC
+                "-T" "${CMAKE_SOURCE_DIR}/linker/pico_memmap.ld"
+        )
 
-pico_enable_stdio_usb(${MAIN_FILE_NAME} 0)
-pico_enable_stdio_uart(${MAIN_FILE_NAME} 1)
+target_include_directories(${MAIN_FILE_NAME} PRIVATE include)
